@@ -13,7 +13,7 @@ wbdir=$(cd ..; pwd)/wbservices
 if [ ! -d "$wbdir" ]; then
   for locroot in .. /storage /opt /project; do
     for loc in wbservices services webservices websites web dhmine; do
-      if [ -f "${locroot}/${loc}/config/wbconf.sh" ]; then
+      if [ -f "${locroot}/${loc}/config/site.conf" ]; then
         wbdir="${locroot}/${loc}"
         break 2
       fi
@@ -28,7 +28,7 @@ fi
 
 ask wbdir "Destination directory" $wbdir
 
-wbconf="${wbdir}/config/wbconf.sh"
+wbconf="${wbdir}/config/site.conf"
 
 if [ -f "${wbconf}" ]; then
   . "${wbconf}"
@@ -63,7 +63,7 @@ EOF
   debug "Setting up config, data and log directories in ${wbdir}..."
   mkdir -p "${wbconfigdir}" "${wbdatadir}" "${wblogdir}"
   chmod 755 "${wbdatadir}" "${wblogdir}"
-  wbconf="${wbconfigdir}/wbconf.sh"
+  wbconf="${wbconfigdir}/site.conf"
   touch "${wbconf}" && chmod 600 "${wbconf}" || exit 1
   wbhost=`hostname`
   info "Enter the _full_ hostname for external Web access."
