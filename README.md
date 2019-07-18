@@ -44,6 +44,7 @@ To uninstall a service simply remove its container (using "docker rm" or the Adm
 ## How does it work
 Services are installed as Docker containers and they are connected to each other using an internal docker network.  
 The framework uses container labels to configure the Web proxy and the autoupdate tool.  
+See the [Wiki](https://github.com/mtwebit/webit-cloud-services/wiki) for more details.
 
 ## Bugs & Support
 The framework has been used in several projects so it is considered fairly stable.  
