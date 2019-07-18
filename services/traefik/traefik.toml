@@ -1,0 +1,88 @@
+# See https://docs.traefik.io/configuration/commons/
+
+# Entrypoints to be used by frontends that do not specify any entrypoint.
+# Each frontend can specify its own entrypoints.
+#
+# Optional
+# Default: ["http"]
+#
+defaultEntryPoints = ["http", "https"]
+
+# If set to true invalid SSL certificates are accepted for backends.
+# This disables detection of man-in-the-middle attacks so should only be used on secure backend networks.
+#
+# Optional
+# Default: false
+#
+InsecureSkipVerify = true
+
+# Enable retry sending request if network error
+[retry]
+# Number of attempts
+#
+# Optional
+# Default: (number servers in backend) -1
+#
+# attempts = 3
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+  [entryPoints.https]
+    address = ":443"
+    [entryPoints.https.tls]
+  [entryPoints.traefik]
+    address = ":9443"
+    [entryPoints.traefik.tls]
+
+
+[api]
+  entryPoint = "traefik"
+  dashboard = true
+# Enable debug mode.
+# This will install HTTP handlers to expose Go expvars under /debug/vars and
+# pprof profiling data under /debug/pprof.
+# Additionally, the log level will be set to DEBUG.
+#
+# Optional
+# Default: false
+#
+debug = true
+
+
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "DOMAINNAME"
+  watch = true
+  exposedbydefault = false
+
+# Enable ACME (Let's Encrypt): automatic SSL.
+[acme]
+email = "EMAIL"
+# File or key used for certificates storage.
+storage = "acme.json"
+# or `storage = "traefik/acme/account"` if using KV store.
+# Entrypoint to proxy acme apply certificates to.
+entryPoint = "https"
+# acmeLogging = true
+# Enable certificate generation on frontends host rules.
+# TODO CHANGE THIS onHostRule = true
+onHostRule = false
+[acme.httpChallenge]
+  # EntryPoint to use for the HTTP-01 challenges.
+  entryPoint = "http"
+
+[traefikLog]
+  # By default the Traefik log is written to stdout in text format.
+  filePath = "/var/log/traefik.log"
+  # format   = "json"
+  logLevel = "DEBUG"  # "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "PANIC"
+
+[accessLog]
+#   By default it will write to stdout
+#   and produce logs in the textual Common Log Format (CLF), extended with additional fields.
+  filePath = "/var/log/access.log"
+#   format = "json"
+
