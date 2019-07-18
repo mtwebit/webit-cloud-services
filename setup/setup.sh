@@ -43,7 +43,7 @@ an environment for deploying various services (Web, DB etc.).
 
 See https://github.com/mtwebit/webit-docker-services/ for more information.
 -------------------------------------------------------------------------------
-Creating an initial configuration for deploying Webit Docker Services.
+Creating an initial configuration for deploying Webit Cloud Services.
 EOF
   [ -d "$wbdir" ] && fatal "$wbdir exists. Setup cannot continue."
   info $wbdir should have at least 30GB of free space.
