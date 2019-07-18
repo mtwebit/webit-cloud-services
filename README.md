@@ -1,7 +1,7 @@
 ## Webit Cloud Services (WBcloud)
 This is a framework to set up and to maintain a complex system using Docker containers,
 also provides a set of ready-to-use services (e.g. database, Web server, PHP, LDAP, Unix shell etc.)
-and a menu-driven tool to simplify the installation and system maintenance.
+and a menu-driven tool to simplify system installation and maintenance.
 
 Features:  
 * reconfigure the system on-the-fly without rebuilding and restarting everything
