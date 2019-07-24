@@ -157,6 +157,7 @@ function container_setup() {
   ( docker pull ${dimage} 2>&1 ) >/dev/null
   info -c -n "installing..."
   # a simple docker create ... won't work because of the dimagefull parameter completition
+  # echo docker create --name $dcontainer --label $wbid $dargs "$@" ${dimagefull} 
   echo docker create --name $dcontainer --label $wbid $dargs "$@" ${dimagefull} | bash 2>&1 > /dev/null || fatal "Failed to create the container"
   info -c "done."
   set +o noglob
@@ -407,10 +408,9 @@ function service_setup_url {
   fi
   surl="https://${shost}${spath}"
   ask trule "Frontend rule" $trule
-  tlabels="$tlabels --label traefik.frontend.rule=${trule} --label traefik.enable=true"
+  tlabels="$tlabels --label traefik.frontend.rule=${trule} --label traefik.port=$siport --label traefik.enable=true"
   info "External $title URL: ${surl}"
-  if [ "$siport" != "80" ]; then
-    tlabels="$tlabels --label traefik.port=$siport"
+  if [ "$siport" != "80" ] && [ "$siport" != "443" ]; then
     iurl="https://${containername}.${dockernet}:${siport}"
   else
     iurl="https://${containername}.${dockernet}"
