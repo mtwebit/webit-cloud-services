@@ -12,6 +12,7 @@ dockerimage="redis"
 
 if ! container_exists $containername; then
   siport="6379"
+  webaccess="n"
   service_setup
   container_setup "$dockerimage" $containername
 else
