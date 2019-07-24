@@ -312,7 +312,8 @@ function services_install {
   fi
 
   # Running the install script in a subshell (to forget all its local vars)
-  ( . "$installfile" )
+  shift
+  ( . "$installfile" $* )
 
   # forget variables set by this script
   unset sname surl spath siport iurl prefixStrip
@@ -324,7 +325,6 @@ function services_install {
 # Set up a singleton service (only one instance is allowed or used)
 # if arg1 is set to internal then no external Web access is allowed
 function service_setup {
-  info "Configuring and installing $title..."
   [ -z "$sname" ] && sname=$servicename
   ask sname "One word name for the $title container" $sname
   containername=$sname
@@ -349,7 +349,6 @@ function service_setup {
 
 # Setup a service instance (for services with multiple instances allowed)
 function service_setup_instance {
-  info "Configuring and installing $title instance..."
   [ -z "$sname" ] && sname=$servicename
   ask sname "One word name for the $title instance" $sname
   containername=${sname}-${servicename}
@@ -423,7 +422,7 @@ function service_setup_url {
 # List service instances
 function service_list_instances {
   if [ -d "$serviceconfigdir" ]; then
-    service_instances=$(cd $serviceconfigdir; ls -d */ | sed 's#/##' 2>/dev/null)
+    service_instances=$(cd $serviceconfigdir; ls -d */ 2>/dev/null | sed 's#/##' 2>/dev/null)
   fi
   if [ -z "$service_instances" ]; then
     info "No active $title instances found."
@@ -447,12 +446,22 @@ function profile_install {
   if [ -z "$found" ]; then
     fatal "No profile named $1 found."
   else
-    info "Installing $found."
-    for srv in `grep -v "^#" $found`; do
-      debug "Installing $srv"
-      services_install $srv
+    tmpfile=install_temp.$$
+    grep -v "^#" $found | while IFS= read -r srv; do
+      echo info "Installing $srv" >>$tmpfile
+      echo services_install $srv >>$tmpfile
     done
+    trap profile_install_cleanup SIGINT
+    source $tmpfile
+    \rm $tmpfile
+    trap - SIGINT
   fi
+  exit
+}
+
+function profile_install_cleanup {
+  rm install_temp.$$
+  exit
 }
 
 function generate_password {
