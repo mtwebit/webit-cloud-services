@@ -16,11 +16,14 @@ service_list_instances $mariadb_instances
 
 if askif "Create/Update $title instances?" y; then
   webaccess="n"
-  service_setup_instance
 
   if [ -z "$mydb" ]; then
     mydb="$sname"
   fi
+
+  [ "$1" != "" ] && sname="$1" && mydb="$1"
+
+  service_setup_instance
 
   if [ ! -d ${servicedatadir}/${sname} ]; then
     ask mydb "Database name" $mydb
