@@ -279,12 +279,13 @@ function services_install {
   fi
   if [[ "$1" == *"/"* ]]; then
     # service dir
-    servicedir=$(dirname $1)
-    installfile=$1
+    servicedir=${WBROOT}/${1}
   else
     servicedir=${WBROOT}/services/$1
-    installfile=${servicedir}/setup.sh
   fi
+  installfile=${servicedir}/setup.sh
+
+  [ ! -f "$installfile" ] && fatal "Service $1 not found."
 
   # last dir name
   servicename=$(basename $servicedir)
@@ -437,6 +438,23 @@ function service_list_instances {
   fi
 }
 
+
+# Install a profile (several services)
+# 1: profile file
+function profile_install {
+  # found=$(cd "$WBROOT"; ls -d profiles/$1 */${1}.wbprofile 2>/dev/null | sed 's#.*/##' 2>/dev/null)
+  found=$(cd "$WBROOT"; ls -d profiles/$1 */${1}.wbprofile 2>/dev/null)
+  if [ -z "$found" ]; then
+    fatal "No profile named $1 found."
+  else
+    info "Installing $found."
+    for srv in `grep -v "^#" $found`; do
+      debug "Installing $srv"
+      services_install $srv
+    done
+  fi
+exit
+}
 
 function generate_password {
   < /dev/urandom tr -dc A-Za-z0-9@_+- | head -c${1:-8};echo

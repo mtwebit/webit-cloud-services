@@ -10,7 +10,7 @@ echo "======= WebIT Cloud Services Toolkit deployment tool =====================
 
 WBROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [ "$1" == "-d" ]; then verbose=true; fi
+if [ "$1" == "-d" ]; then verbose=true; shift; fi
 
 # Import common functions
 . ${WBROOT}/setup/functions.sh
@@ -25,6 +25,11 @@ if [ "$1" == "-d" ]; then verbose=true; fi
 # Watchtower, Traefik
 container_running $watchtower || services_install watchtower
 container_running $traefik || services_install traefik
+
+# Install a service profile (several containers at once)
+if [ "$1" == "-p" ]; then
+  profile_install "$2"
+fi
 
 while true; do
   services_menu
