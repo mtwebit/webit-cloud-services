@@ -453,7 +453,6 @@ function profile_install {
       services_install $srv
     done
   fi
-exit
 }
 
 function generate_password {
