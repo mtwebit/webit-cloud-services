@@ -18,6 +18,8 @@ if ! container_exists $containername; then
     siport="80"
   fi
 
+  warning "BUG: the service does not work with path prefix atm."
+
   service_setup
   container_setup "$dockerimage" $containername
 else
