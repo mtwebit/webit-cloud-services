@@ -262,6 +262,7 @@ function services_menu {
   if [ "$?" == "0" ]; then
     ans=${ans%[ ](*}
     service=$(egrep "^title=\"$ans\"" $wbservices | cut -d : -f 1 )
+    service=$(dirname $service) # strip /setup.sh
     if [ "$service" == "" ]; then
       fatal "Internal error finding service file for $ans."
     fi
@@ -277,13 +278,12 @@ function services_install {
   if [ "$1" == "" ]; then
     fatal "Internal error: No service specified."
   fi
-  if [[ "$1" == *"/"* ]]; then
-    # service dir
-    servicedir=${WBROOT}/${1}
-  else
-    servicedir=${WBROOT}/services/$1
+  servicedir=${1}
+  # Try to add the default base dir is it is not specified
+  if [ ! -d "${servicedir}" ]; then
+    servicedir="services/$servicedir"
   fi
-  installfile=${servicedir}/setup.sh
+  installfile="${servicedir}/setup.sh"
 
   [ ! -f "$installfile" ] && fatal "Service $1 not found."
 
