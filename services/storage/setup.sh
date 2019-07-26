@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 #
 # Webit Cloud Services Toolkit - Nextcloud storage
 #
@@ -103,19 +103,13 @@ if ! container_exists $containername; then
       . "${serviceconf}"
     fi
   fi
-  # TODO move this to a new service
-  if askif "Enable shared document editing?" y; then
-    if ! container_exists onlyoffice; then
-      container_setup "onlyoffice" onlyoffice \
-        -v ${wbdir}/data/onlyoffice:/var/www/onlyoffice/Data \
-        -v ${wbdir}/logs/onlyoffice:/var/log/onlyoffice \
-        -i -t
-    fi
-    container_running onlyoffice || container_start onlyoffice
+  popd >/dev/null
+
+  if askif "Enable Web-based, shared document editing?" y; then
+    container_exists onlyoffice || warning "Don't forget to install the Onlyoffice service."
     occ app:install onlyoffice
   fi
     
-  popd >/dev/null
 else
   info "A storage service named $sname is runnning."
   info "External URL is $surl"
