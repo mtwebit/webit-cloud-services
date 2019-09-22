@@ -8,7 +8,7 @@
 
 title="Web Proxy"
 desc="Web gateway to all backend services."
-dockerimage="traefik"
+dockerimage="traefik:v1.7"
 
 if ! container_exists $containername; then
   if [ -z "$siport" ]; then
