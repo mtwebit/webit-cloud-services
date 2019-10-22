@@ -9,6 +9,9 @@
 echo "======= WebIT Cloud Services Toolkit deployment tool =========================="
 
 WBROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NETDEV=$(ip route show |grep "default "|awk '{print $5}')
+IPZONE=$(ip addr show ${NETDEV}|grep "inet "|awk '{print $2}')
+IPADDR=$(echo $IPZONE | cut -d/ -f 1)
 
 if [ "$1" == "-d" ]; then verbose=true; shift; fi
 
