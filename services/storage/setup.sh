@@ -37,7 +37,10 @@ if ! container_exists $containername; then
   remember "$serviceconf" adminuser
   ask adminpw "Admin password" $adminpw
   remember "$serviceconf" adminpw
+    # --label "traefik.frontend.redirect.permanent=true" \
   container_setup "$dockerimage" $containername \
+    --label "traefik.frontend.redirect.regex=^\(.*\)/.well-known/\(card\|cal\)dav" \
+    --label "traefik.frontend.redirect.replacement=https://${shost}${spath}remote.php/dav/" \
     -v  ${wbdir}/data/storage:/var/www/html
 
   # Start the container if it is not running
@@ -55,6 +58,7 @@ if ! container_exists $containername; then
     # TODO hostname
     # TODO skeleton files
     occ config:system:set trusted_domains 2 --value=${wbhost}
+    occ config:system:set trusted_proxies 0 --value=${IPADDR}
     occ config:system:set overwrite.cli.url --value=${surl}
     if [ "$spath" != "/" ] && [ "$spath" != " " ]; then
       occ config:system:set overwritewebroot --value=${spath}
