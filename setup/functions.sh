@@ -392,7 +392,8 @@ function service_setup_url {
   ask shost "Hostname (first part of the URL)" "$shost"
   [ "$siport" == "" ] && siport=80
   ask siport "Internal service port number" "$siport"
-  [ "$spath" == "" ] && spath="/${sname}/"
+  # [ "$spath" == "" ] && spath="/${sname}/"	- fix for storage
+  [ "$spath" == "" ] && spath="/${sname}"
   ask spath "URL path (starts with /, / = root)" "$spath"
   [ "$prefixStrip" == "" ] && prefixStrip="n"
   if [ "$spath" == "/" ] || [ "$spath" == " " ]; then
@@ -408,7 +409,7 @@ function service_setup_url {
   fi
   surl="https://${shost}${spath}"
   ask trule "Frontend rule" $trule
-  tlabels="$tlabels --label traefik.frontend.rule=${trule} --label traefik.port=$siport --label traefik.enable=true"
+  tlabels="$tlabels --label traefik.frontend.rule=${trule} --label traefik.port=$siport --label traefik.enable=true --label traefik.frontend.passHostHeader=true"
   info "External $title URL: ${surl}"
   if [ "$siport" != "80" ] && [ "$siport" != "443" ]; then
     iurl="https://${containername}.${dockernet}:${siport}"
