@@ -53,7 +53,7 @@ EOF
   wbid=$(echo $wbname | sed 's/ /\./g' | tr '[:upper:]' '[:lower:]')
   dnet=`docker network ls | grep "${wbid} " | cut -d " " -f 1`
   [ "$dnet" != "" ] && fatal "$wbid is in use.  Setup cannot continue."
-  info "$wbid will be used as a label on installed containers."
+  ask wbid "Label for service containers" $wbid
   # TODO backup config?
   # \cp -f "${wbconf}" "${wbconf}".bak-`date +%Y%m%d-%H:%M`
   mkdir -p "${wbdir}" || fatal "Could not create $wbdir"
