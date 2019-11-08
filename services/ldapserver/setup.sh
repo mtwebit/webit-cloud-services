@@ -68,8 +68,8 @@ if ! container_exists $containername; then
     -v ${servicedatadir}/openldap-data:/var/lib/openldap/openldap-data
   container_start $containername
   while ! container_running $containername ; do
-    sleep 5;
     debug "Waiting for $containername to start..."
+    sleep 5;
   done
   # install the LDAP clients
   debug -n "Installing LDAP client utilities..."

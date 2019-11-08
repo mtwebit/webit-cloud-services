@@ -145,7 +145,8 @@ function container_setup() {
   dcontainer="$1"
   shift
   ask rpolicy "Restart policy for this service" "unless-stopped"
-  dargs=" --restart=$rpolicy --network ${dockernet} --network-alias ${containername}.${wbdomain} ${tlabels}"
+# TODO do we need the network alias? probably causes problems with real DNS entries
+  dargs=" --restart=$rpolicy --network ${dockernet} --network-alias ${containername}.${dockernet} ${tlabels}"
   if askif "Enable automatic updates using Watchtower?" n; then
     dargs="$dargs --label com.centurylinklabs.watchtower.enable=true"
   fi
@@ -157,7 +158,7 @@ function container_setup() {
   ( docker pull ${dimage} 2>&1 ) >/dev/null
   info -c -n "installing..."
   # a simple docker create ... won't work because of the dimagefull parameter completition
-  # echo docker create --name $dcontainer --label $wbid $dargs "$@" ${dimagefull} 
+# debug docker create --name $dcontainer --label $wbid $dargs "$@" ${dimagefull} 
   echo docker create --name $dcontainer --label $wbid $dargs "$@" ${dimagefull} | bash 2>&1 > /dev/null || fatal "Failed to create the container"
   info -c "done."
   set +o noglob
