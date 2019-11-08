@@ -36,6 +36,7 @@ if ! container_exists $containername; then
   else
     info "Using existing certs in ${certfile}."
   fi
+
   # https://docs.traefik.io/#docker
   # https://docs.traefik.io/user-guide/docker-and-lets-encrypt/
   # We set up Traefik to proxy its own dashboard on port 9443
@@ -74,6 +75,10 @@ if ! container_exists $containername; then
   #container_stop $containername
   warning "Certificate requests are disabled."
   warning "To enable it edit ${serviceconfigdir}/traefik.toml."
+  # TODO Check and configure the firewall
+  warning "If you can't connect to the Traefik status panel, check the firewall."
+  warning "E.g. firewall-cmd --zone=public --permanent --add-port 443/tcp"
+
 else
   if askif "Update the $title service?" y; then
     container_remove $containername
