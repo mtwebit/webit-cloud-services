@@ -76,9 +76,9 @@ if ! container_exists $containername; then
   warning "Certificate requests are disabled."
   warning "To enable it edit ${serviceconfigdir}/traefik.toml."
   # TODO Check and configure the firewall
+  # It is not trivial as Docker is also involved
+  # See https://github.com/firewalld/firewalld/issues/407
   warning "If you can't connect to the Traefik status panel, check the firewall."
-  warning "E.g. firewall-cmd --zone=public --permanent --add-port 443/tcp"
-
 else
   if askif "Update the $title service?" y; then
     container_remove $containername
