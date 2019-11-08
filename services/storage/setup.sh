@@ -10,7 +10,7 @@ title="Cloud Storage"
 desc="Enables cloud file sharing between users."
 
 # The image file
-dockerimage="nextcloud"
+dockerimage="nextcloud:stable"
 
 # Variables set by the caller script
 # $servicedir: this directory
