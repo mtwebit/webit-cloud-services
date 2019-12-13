@@ -95,6 +95,24 @@ function docker_auth() {
   docker login $1 -u $2 -p $3
 }
 
+function docker_install() {
+  error "Docker is not installed."
+  if askif "Do you wan't to install it?" y; then
+    info "Executing curl -fsSL get.docker.com | sh ..."
+    curl -fsSL get.docker.com | sh || fatal "Installation failed."
+    which docker 2>/dev/null >/dev/null || fatal "Installation failed."
+    if [ `id -u` != 0 ]; then
+      info "The current user has to be added to the docker group."
+      warning "Invoking sudo usermod -aG docker `whoami`"
+      sudo usermod -aG docker `whoami`
+      warning "You have to log out and back in for this to take effect!"
+      exit
+    fi
+  else
+    exit
+  fi
+}
+
 # Print container names that are based on a given image
 # 1: container image name
 function container_get_name() {
