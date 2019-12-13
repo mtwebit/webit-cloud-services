@@ -8,7 +8,7 @@
 
 title="Watchtower"
 desc="Provides automatic container image updates"
-dockerimage="v2tec/watchtower"
+dockerimage="containrrr/watchtower"
 
 if ! container_exists $containername; then
   # setting default values
