@@ -258,13 +258,14 @@ function services_print {
 
 # Build a service menu and perform actions on its items
 function services_menu {
+  debug -n "Scanning available services..."
   menu=""
   wbservices=$(cd ${WBROOT}; ls */*/setup.sh | sort -t/ -k2)
   for s in $wbservices; do
-    simage=$(grep ^dockerimage ${WBROOT}/$s | cut -d '"' -f 2)
+    #simage=$(grep ^dockerimage ${WBROOT}/$s | cut -d '"' -f 2)
     stitle=$(grep ^title ${WBROOT}/$s | cut -d '"' -f 2)
     sdesc=$(grep ^desc ${WBROOT}/$s | cut -d '"' -f 2)
-    if [ "$simage" == "" ]; then continue; fi
+    #if [ "$simage" == "" ]; then continue; fi
     # TODO require labels
     cname=$(container_get_name $simage)
     if [ "$cname" == "" ]; then
@@ -276,6 +277,7 @@ function services_menu {
   if [ "$menu" == "" ]; then
     fatal "No services found."
   fi
+  debug -c "done."
 
   ans=$(echo whiptail --fb --ok-button '"Install / Manage"' --cancel-button '"Exit"' --title \"$wbname\" --menu '"Choose a service to install/upgrade"' 22 78 12 $menu "3>&1 1>&2 2>&3" | sh)
   if [ "$?" == "0" ]; then
