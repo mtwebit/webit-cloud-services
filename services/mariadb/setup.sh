@@ -10,7 +10,20 @@
 
 title="Mariadb"
 desc="A MySQL-compatible database server"
-dockerimage="mariadb"
+
+case `arch` in
+x86_64)
+  dockerimage="mariadb"
+  ;;
+armv7l)
+  warning "Using an unofficial MariDB image for ARMv7"
+  dockerimage="jsurf/rpi-mariadb"
+  ;;
+*)
+  error "Unsupported host architecture"
+  return 0
+  ;;
+esac
 
 service_list_instances $mariadb_instances
 
