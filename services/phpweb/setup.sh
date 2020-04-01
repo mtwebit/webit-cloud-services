@@ -65,6 +65,7 @@ if askif "Create/Update $title instances?" y; then
     ask rsync_port "External port number for rsync access to this container? (0=random)" 873
     needrsync=1
     extraparams="-p ${rsync_port}:873 "
+    remember "$instanceconf" rsync_port
   else
     needrsync=0
   fi
@@ -106,10 +107,10 @@ if askif "Create/Update $title instances?" y; then
     docker exec ${containername} sh -c "echo 'rsync --daemon -v --log-file /var/log/rsyncd.log' >> /entrypoint.sh"
     if [ ! -f "${serviceconfigdir}/${sname}/rsync_users" ]; then
        ask rsync_user "Rsync remote username" "webadmin"
-       remember "$serviceconf" rsync_user
+       remember "$instanceconf" rsync_user
        rsync_password=`generate_password`
        ask rsync_password "User password" $rsync_password
-       remember "$serviceconf" rsync_password
+       remember "$instanceconf" rsync_password
        echo "${rsync_user}:${rsync_password}" >> "${serviceconfigdir}/${sname}/rsync_users"
     fi
     docker restart $containername >/dev/null
