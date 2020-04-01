@@ -75,8 +75,8 @@ if ! container_exists $containername; then
   debug -n "Installing LDAP client utilities..."
   # Sometimes there are networking problems with containers
   while [ "`docker exec -it $containername sh -c "ls /usr/bin/ldapsearch" | grep -c "No such"`" == "1" ]; do
-    docker exec $containername sh -c 'timeout -t 8 apk update' 2>/dev/null >/dev/null
-    docker exec $containername sh -c 'timeout -t 5 apk add --no-cache openldap-clients' 2>/dev/null >/dev/null
+    docker exec $containername sh -c 'timeout 8 apk update' 2>/dev/null >/dev/null
+    docker exec $containername sh -c 'timeout 5 apk add --no-cache openldap-clients' 2>/dev/null >/dev/null
     sleep 2
   done
   debug -c "done."

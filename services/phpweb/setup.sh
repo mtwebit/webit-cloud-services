@@ -100,8 +100,8 @@ if askif "Create/Update $title instances?" y; then
     # TODO this is not tested
     if [ "docker exec -it ${containername} ls /etc/rsyncd.conf 2> /dev/null" != "/etc/rsyncd.conf" ]; then
     info "Setting up an rsync server to provide file access."
-    docker exec $containername sh -c 'timeout -t 8 apk update' 2>/dev/null >/dev/null
-    docker exec $containername sh -c 'timeout -t 5 apk add --no-cache rsync' 2>/dev/null >/dev/null
+    docker exec $containername sh -c 'timeout 8 apk update' 2>/dev/null >/dev/null
+    docker exec $containername sh -c 'timeout 5 apk add --no-cache rsync' 2>/dev/null >/dev/null
     cp ${servicedir}/websites-rsync.conf ${servicedatadir}/${sname}
     docker exec ${containername} sh -c "cat /var/www/html/websites-rsync.conf >> /etc/rsyncd.conf && /bin/rm -f /var/www/html/websites-rsync.conf"
     docker exec ${containername} sh -c "echo 'rsync --daemon -v --log-file /var/log/rsyncd.log' >> /entrypoint.sh"
