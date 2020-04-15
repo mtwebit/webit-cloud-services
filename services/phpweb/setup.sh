@@ -112,11 +112,12 @@ if askif "Create/Update $title instances?" y; then
        ask rsync_password "User password" $rsync_password
        remember "$instanceconf" rsync_password
        echo "${rsync_user}:${rsync_password}" >> "${serviceconfigdir}/${sname}/rsync_users"
+       chmod 600 "${serviceconfigdir}/${sname}/rsync_users"
     fi
     docker restart $containername >/dev/null
     fi
     rsync_port=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "873/tcp") 0).HostPort }}' $containername)
-    info "Remote file access: rsync://${shost}:${rsync_port}/webroot"
+    info "Remote file access: rsync://${rsync_user}@${shost}:${rsync_port}/webroot"
   fi
   # TODO do we need this?
   # info "Disabling IPv6 in $containername."
