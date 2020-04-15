@@ -74,7 +74,7 @@ if askif "Create/Update $title instances?" y; then
   container_setup $dockerimage $containername \
     -v ${serviceconfigdir}/${sname}:/etc/nginx/conf.d \
     -v ${servicelogdir}/${sname}:/var/log \
-    -v ${servicedatadir}/${sname}:/var/www/html/${spath} \
+    -v ${servicedatadir}/${sname}:/var/www/html \
     $extraparams \
     -e NO_OPCACHE=1
 
