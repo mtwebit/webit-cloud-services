@@ -22,7 +22,7 @@ dockerimage="boxedcode/alpine-nginx-php-fpm"
 # and reconfigure supervisord
 # [program:php-fpm]
 # environment=LD_PRELOAD=/usr/lib/preloadable_libiconv.so
-# Also add this line to /root/.bashrc
+# Also add this line to /root/.bashrc and to ~nginx/.bashrc
 # declare -x LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 # test: php -d error_reporting=22527 -d display_errors=1 -r 'var_dump(iconv("UTF-8", "UTF-8//IGNORE", "This is the Euro symbol '\''€'\''."));'
 # test: iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', 'íöüóőúéáűšěýčíéáýřčíšýíščř');
