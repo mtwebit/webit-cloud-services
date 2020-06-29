@@ -12,7 +12,6 @@ Features:
 * supports easy backup and migration to a new location
 
 ## Installation
-[Install Docker](https://docs.docker.com/install/).  
 Get the source and start the deplopment utility:  
 ```sh
 git clone https://github.com/mtwebit/webit-cloud-services.git  
