@@ -134,7 +134,9 @@ if ! container_exists $containername; then
     occ db:add-missing-indices
   fi
 
-    
+  debug "Scanning already existing files..."
+  occ files:scan --all
+
 else
   info "A storage service named $sname is runnning."
   info "External URL is $surl"
