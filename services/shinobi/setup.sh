@@ -64,7 +64,7 @@ if ! container_exists $containername; then
     -e MOTION_PORT=8080 \
     -e MYSQL_USER=$dbuser \
     -e MYSQL_PASSWORD=$dbpw \
-    -e MYSQL_HOST=$dbhost \
+    -e MYSQL_HOST=$dbserver \
     -e MYSQL_DATABASE=$dbname \
     -v /etc/localtime:/etc/localtime:ro \
     -v /etc/timezone:/etc/timezone:ro \

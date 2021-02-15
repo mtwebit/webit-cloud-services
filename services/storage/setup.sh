@@ -41,7 +41,7 @@ if ! container_exists $containername; then
   container_setup "$dockerimage" $containername \
     --label "traefik.frontend.redirect.regex=^\(.*\)/.well-known/\(card\|cal\)dav" \
     --label "traefik.frontend.redirect.replacement=https://${shost}${spath}remote.php/dav/" \
-    -v  ${wbdir}/data/storage:/var/www/html
+    -v  ${servicedatadir}:/var/www/html
 
   # Start the container if it is not running
   container_running $containername || container_start $containername
