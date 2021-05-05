@@ -34,6 +34,11 @@ if ! container_exists $containername; then
   ask zone "DNS zone to manage" $zone
   remember "$serviceconf" zone
 
+  # TODO add A record for the zone root
+  # IN A <ip-addr>
+
+  # TODO SOA localhost in the main zone?
+
   ask dnsport "DNS server external port (tcp and udp)" $dnsport
   remember "$serviceconf" dnsport
 
@@ -45,10 +50,18 @@ if ! container_exists $containername; then
     -p ${dnsport}:53 -p ${dnsport}:53/udp \
     $extraparams
 
+  info "If the service fails to start disable other services using port 53."
+  info "This includes systemd-resolved.service."
+else
+  if askif "Update the $title service?" y; then
+    container_remove $containername
+    . ${BASH_SOURCE[0]}
+  fi
 fi
 
 # Start the container if it is not running
 container_running $containername || container_start $containername
+
 info "DNS server running on ${dnsport}"
 info "Management API is at ${surl}"
 info "E.g. ${surl}/update?secret=${secret}&domain=ENTRY&addr=IPADDR"
