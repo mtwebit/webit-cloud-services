@@ -489,3 +489,7 @@ function profile_install_cleanup {
 function generate_password {
   < /dev/urandom tr -dc A-Za-z0-9@_+- | head -c${1:-8};echo
 }
+
+function encode_htpasswd {
+  openssl passwd -apr1 $1
+}

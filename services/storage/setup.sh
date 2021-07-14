@@ -41,7 +41,7 @@ if ! container_exists $containername; then
   container_setup "$dockerimage" $containername \
     --label "traefik.frontend.redirect.regex=^\(.*\)/.well-known/\(card\|cal\)dav" \
     --label "traefik.frontend.redirect.replacement=https://${shost}${spath}remote.php/dav/" \
-    -v  ${wbdir}/data/storage:/var/www/html
+    -v  ${servicedatadir}:/var/www/html
 
   # Start the container if it is not running
   container_running $containername || container_start $containername
@@ -113,7 +113,30 @@ if ! container_exists $containername; then
     container_exists onlyoffice || warning "Don't forget to install the Onlyoffice service."
     occ app:install onlyoffice
   fi
-    
+
+  if askif "Enable (convert to) MariaDB (MySQL) backend?" y; then
+    container_exists mariadb || warning "Don't forget to install the MariaDB service."
+    if [ -z "${dbhost}" ]; then # set defaults
+      dbhost=${containername}-mariadb
+      dbuser=root
+      dbpw=${rootpw}
+      dbname=nextcloud
+    fi
+    ask dbhost "Database host" $dbhost
+    remember "$serviceconf" dbhost
+    ask dbname "Database name" $dbname
+    remember "$serviceconf" dbname
+    ask dbuser "DB user" $dbuser
+    remember "$serviceconf" dbuser
+    ask dbpw "DB password" $dbpw
+    remember "$serviceconf" dbpw
+    occ db:convert-type mysql ${dbuser} ${dbhost} ${dbname} --password ${dbpw} --all-apps -- || error "Unable to set up the database"
+    occ db:add-missing-indices
+  fi
+
+  debug "Scanning already existing files..."
+  occ files:scan --all
+
 else
   info "A storage service named $sname is runnning."
   info "External URL is $surl"
