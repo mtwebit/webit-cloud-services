@@ -54,7 +54,7 @@ if ! container_exists $containername; then
     remember "$serviceconf" dbuser
     ask dbpw "DB password" $dbpw
     remember "$serviceconf" dbpw
-    params="${params} -e DB_ADDR=${dbhost} -e DB_DATABASE=${dbname} -e DB_USER=${dbuser} -e DB_PASSWORD=${dbpw} DB_VENDOR=mariadb"
+    params="${params} -e DB_ADDR=${dbhost} -e DB_DATABASE=${dbname} -e DB_USER=${dbuser} -e DB_PASSWORD=${dbpw} -e DB_VENDOR=mariadb"
   else
     # Map the internal database dir to the service data dir
     # TODO this does not work, needs to prepare the dir beforehand
