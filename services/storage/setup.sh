@@ -115,7 +115,7 @@ if ! container_exists $containername; then
   fi
 
   if askif "Enable (convert to) MariaDB (MySQL) backend?" y; then
-    container_exists mariadb || warning "Don't forget to install the MariaDB service."
+    image_exists mariadb || warning "Don't forget to install the MariaDB service."
     if [ -z "${dbhost}" ]; then # set defaults
       dbhost=${containername}-mariadb
       dbuser=root
