@@ -1,0 +1,7 @@
+# Taken from https://keycloak.discourse.group/t/keycloak-timeout-issue/2309
+
+embed-server --server-config=standalone-ha.xml --std-out=echo
+echo Changing transaction default timeout
+/subsystem=transactions/:write-attribute(name=default-timeout,value=3600)
+echo Done
+stop-embedded-server
