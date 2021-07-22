@@ -64,4 +64,7 @@ if askif "Create/Update $title instances?" y; then
   # TODO backup the db periodically
   # $ docker exec some-mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > /some/path/on/your/host/all-databases.sql
 
+  # TODO install mysqltuner
+  # docker exec -it $containername "apt update && apt install mysqltuner"
+
 fi
