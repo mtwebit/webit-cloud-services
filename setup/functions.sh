@@ -122,7 +122,8 @@ function container_get_name() {
 # Query a Docker image by its full label
 # 1: image label
 function image_exists() {
-  status=$(docker image ls -q --filter "label=$1")
+  # TODO does not work status=$(docker image ls -q --filter "label=$1")
+  status=$(docker images -q $1)
   [ "$status" != "" ]
 }
 
