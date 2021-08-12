@@ -45,7 +45,7 @@ See https://github.com/mtwebit/webit-docker-services/ for more information.
 -------------------------------------------------------------------------------
 Creating an initial configuration for deploying Webit Cloud Services.
 EOF
-  [ -d "$wbdir" ] && fatal "$wbdir exists. Setup cannot continue."
+  [ -d "$wbdir" ] && warning "$wbdir already exists."
   info $wbdir should have at least 30GB of free space.
   info "Also ensure that you have plenty of disk space for docker images and volumes."
   [ `id -u` != 0 ] && warning "Sudo access may be required to install certain services."
