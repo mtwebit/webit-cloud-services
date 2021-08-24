@@ -23,10 +23,7 @@ if ! container_exists $containername; then
   remember "$wbconf" traefik
 
   # setting default values
-  if [ "$certfile" == "" ]; then
-    certfile="${wbdir}/config/certs/acme.json"
-    remember "$serviceconf" certfile
-  fi
+  certfile="${wbdir}/config/certs/acme.json"
 
   if [ ! -f "$certfile" ]; then
     info "Creating $certfile to store certificates."
