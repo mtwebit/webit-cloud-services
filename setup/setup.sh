@@ -6,12 +6,12 @@
 # Licensed under Mozilla Public License v2.0 http://mozilla.org/MPL/2.0/
 # 
 
-# default service storage location
-wbdir=$(cd ..; pwd)/wbservices
+# default service storage location (/srv for root, wbservices for normal users)
+[ `id -u` == 0 ] && wbdir="/srv" || wbdir=$(cd ..; pwd)/wbservices
 
 # try to find the location of the service storage
 if [ ! -d "$wbdir" ]; then
-  for locroot in .. /storage /opt /project; do
+  for locroot in .. /srv /storage /export /project; do
     for loc in wbservices services webservices websites web dhmine; do
       if [ -f "${locroot}/${loc}/config/site.conf" ]; then
         wbdir="${locroot}/${loc}"
@@ -21,17 +21,21 @@ if [ ! -d "$wbdir" ]; then
   done
 fi
 
-
-if [ -f "${wbdir}" ]; then
-  echo "Found a previous deployment in ${wbdir}."
-fi
-
 ask wbdir "Destination directory" $wbdir
 
 wbconf="${wbdir}/config/site.conf"
 
 if [ -f "${wbconf}" ]; then
+  cwbdir="${wbdir}"
   . "${wbconf}"
+  if [ "${wbdir}" != "${cwbdir}" ]; then
+    warning "Install directory has changed, updating the config."
+    wbdir="${cwbdir}"
+    remember "$wbconf" wbdir
+  fi
+  wbconfigdir="${wbdir}/config"
+  wbdatadir="${wbdir}/data"
+  wblogdir="${wbdir}/log"
 else
   # Create an initial configuration
   cat <<EOF
@@ -88,9 +92,6 @@ EOF
 EOF
   fi
   remember "$wbconf" wbdir
-  remember "$wbconf" wbconfigdir
-  remember "$wbconf" wbdatadir
-  remember "$wbconf" wblogdir
   remember "$wbconf" wbname
   remember "$wbconf" wbid
   remember "$wbconf" wbhost
