@@ -10,7 +10,7 @@
 
 title="Mongodb"
 desc="A NoSQL database server"
-dockerimage="mongo"
+dockerimage="mongo:4"	# MongDB 5 requires AVX CPU instruction set
 
 # singleton now
 # service_list_instances $mongodb_instances
