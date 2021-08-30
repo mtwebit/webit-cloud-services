@@ -29,8 +29,6 @@ if ! container_exists $containername; then
     spath="/auth"
   fi
 
-  [ ! -d "${servicedatadir}/keystores" ] && mkdir -p "${servicedatadir}/keystores"
-
   siport="8080"
 
   info "Keycloud works with / or /auth URL paths with no prefix strip."
@@ -41,19 +39,8 @@ if ! container_exists $containername; then
   remember "$serviceconf" adminuser
   ask adminpw "Admin password" $adminpw
   remember "$serviceconf" adminpw
+  params="-e KEYCLOAK_USER=${adminuser} -e KEYCLOAK_PASSWORD=${adminpw}"
 
-  # TODO
-  #
-  # Truststore kell self-signed tanusitvanyokhoz (pl. ldaps)
-  # A kontenerben:
-  # cd /opt/jboss/keycloak/standalone/configuration/keystores/
-  # cat > cert.cer ...
-  # keytool -import -alias ALIAS -keystore truststore.jks -file cert.cer
-  # cd ..
-  # vi standalone-ha.xml
-  # Truststore beillesztese:
-  # https://www.keycloak.org/docs/latest/server_installation/#_truststore
-  #
   # TODO
   # Szoftvertelepites microdnf segitsegevel
   # docker exec -it -u root keycloak microdnf install vi wget less findutils
@@ -61,9 +48,27 @@ if ! container_exists $containername; then
   # standalone-ha.xml a default konfig
 
   # JAVA_OPTS_APPEND is van
-  #  params="-e KEYCLOAK_USER=${adminuser} -e KEYCLOAK_PASSWORD=${adminpw} -e KEYCLOAK_FRONTEND_URL=${surl} -e PROXY_ADDRESS_FORWARDING=true"
 
-  params="-e KEYCLOAK_USER=${adminuser} -e KEYCLOAK_PASSWORD=${adminpw} -e PROXY_ADDRESS_FORWARDING=true -v ${servicedatadir}/keystores/:/opt/jboss/keycloak/standalone/configuration/keystores/"
+  params="${params} -e PROXY_ADDRESS_FORWARDING=true -e KEYCLOAK_FRONTEND_URL=${surl}"
+
+  # Map password-blacklists dir
+  params="${params} -v ${servicedatadir}/password-blacklists/:/opt/jboss/keycloak/standalone/data//password-blacklists/"
+  if [ ! -d "${servicedatadir}/password-blacklists/" ]; then
+    mkdir -p "${servicedatadir}/password-blacklists/"
+    info "You may store password blacklists (e.g. 10_million_password_list_top_1000000.txt) in"
+    info "   ${servicedatadir}/password-blacklists/"
+  fi
+
+  # Map Java truststore and client keys
+  params="${params} -v ${servicedatadir}/keystores/:/opt/jboss/keycloak/standalone/configuration/keystores/"
+  if [ ! -d "${servicedatadir}/keystores/" ]; then
+    mkdir -p "${servicedatadir}/keystores/"
+    info "You may store certficite files and Java truststore in"
+    info "   ${servicedatadir}/keystores/"
+    info "Use keytool -import -alias ALIAS -keystore truststore.jks -file cert.cer"
+    info "and modify standalone-ha.xml to enable it."
+    info "See https://www.keycloak.org/docs/latest/server_installation/#_truststore"
+  fi
 
   if askif "Enable MariaDB (MySQL) backend?" y; then
     image_exists mariadb || warning "Don't forget to install the MariaDB service."
