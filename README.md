@@ -18,14 +18,14 @@ git clone https://github.com/mtwebit/webit-cloud-services.git
 cd webit-cloud-services
 ./wbsetup.sh
 ```
-The deployment tool will display the URLs where you can access the management and user interfaces of the installed services.
+The deployment tool will install the necessary dependencies and start a menu-driven setup utility to deploy and configure the services.
 
 ## System management
 You can reconfigure your system by running the deployment utility again or via the Web Admin UI.  
 To uninstall a service simply remove its container (using "docker rm" or the Web UI).
 
 ## Services
-* LDAP authentication (used by many other services)
+* LDAP authentication and Keycloak IdP
 * automatically configured Web proxy (Traefik)
 * Autoupdater (Watchtower)
 * Cloud Storage (Nextcloud with LDAP auth)
