@@ -1,6 +1,5 @@
 ## Webit Cloud Services Toolkit (WBcloud)
-This is an extensible framework to set up and to maintain a complex system using Docker containers.
-It also contains a set of ready-to-use services (e.g. database, Web server, PHP, LDAP, Unix shell, cloud storage etc.).
+This is an extensible framework to set up and to maintain a complex system of microservices (e.g. database, Web server, PHP, LDAP, Unix shell, cloud storage etc.) behind an automatically configured proxy (Traefik). It uses Docker to deploy the services.
 
 Features:  
 * provides text- and a Web-based GUIs to manage services
@@ -12,14 +11,13 @@ Features:
 * supports easy backup and migration to a new location
 
 ## Installation
+Select a target directory (e.g. /srv) where service configuration and data files will be stored.  
 Get the source and start the deplopment utility:  
 ```sh
-git clone https://github.com/mtwebit/webit-cloud-services.git  
-cd webit-cloud-services  
+git clone https://github.com/mtwebit/webit-cloud-services.git
+cd webit-cloud-services
 ./wbsetup.sh
 ```
-Select a target directory where service configuration and data files will be stored,
-specify a few settings for your system and let the installer do the magic.  
 The deployment tool will display the URLs where you can access the management and user interfaces of the installed services.
 
 ## System management
