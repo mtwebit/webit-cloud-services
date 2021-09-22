@@ -6,11 +6,11 @@
 # Licensed under Mozilla Public License v2.0 http://mozilla.org/MPL/2.0/
 # 
 
-title="Cloud Storage"
+title="Nextcloud Storage"
 desc="Enables cloud file sharing between users."
 
 # The image file
-dockerimage="nextcloud:stable"
+dockerimage="nextcloud:16"
 
 # Variables set by the caller script
 # $servicedir: this directory
