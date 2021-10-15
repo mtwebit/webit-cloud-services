@@ -1,10 +1,13 @@
 #!/bin/bash
 #
-# Webit Cloud Services Toolkit - Web site service
+# Webit Cloud Services Toolkit - PHP Web site service
 # 
-# Copyright 2018-2019 Tamas Meszaros <mt+git@webit.hu>
+# Copyright 2018-2021 Tamas Meszaros <mt+git@webit.hu>
 # Licensed under Mozilla Public License v2.0 http://mozilla.org/MPL/2.0/
 # 
+# See https://olvlvl.com/2019-06-install-php-ext-source
+# See https://github.com/mlocati/docker-php-extension-installer
+#
 
 title="PHP Web site"
 desc="Web servers with PHP support"
@@ -98,3 +101,4 @@ else
 fi
 
 return 0
+
