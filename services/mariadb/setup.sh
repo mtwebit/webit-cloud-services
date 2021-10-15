@@ -25,7 +25,7 @@ armv7l)
   ;;
 esac
 
-service_list_instances $mariadb_instances
+service_list_instances
 
 if askif "Create/Update $title instances?" y; then
   webaccess="n"
@@ -44,6 +44,8 @@ if askif "Create/Update $title instances?" y; then
     ask rootpw "Root password" `generate_password`
     remember "$instanceconf" rootpw
     dboptions="--character-set-server=utf8 --collation-server=utf8_unicode_ci"
+    info "Check the MariaDB manual for valid charset-collation pairs."
+    info "e.g. utf8 - utf8_unicode_ci, utf8mb4 - utf8mb4_hungarian_ci etc."
     ask dboptions "DB options" "$dboptions"
     remember "$instanceconf" dboptions
     extraparams="-e MYSQL_ROOT_PASSWORD=${rootpw} -e MYSQL_DATABASE=${mydb}"
