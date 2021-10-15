@@ -445,7 +445,7 @@ function service_setup_url {
 # List service instances
 function service_list_instances {
   if [ -d "$serviceconfigdir" ]; then
-    service_instances=$(cd $serviceconfigdir; ls -d */ 2>/dev/null | sed 's#/##' 2>/dev/null)
+    service_instances=$(cd $serviceconfigdir; ls *.conf 2>/dev/null | sed 's#.conf##' 2>/dev/null)
   fi
   if [ -z "$service_instances" ]; then
     info "No active $title instances found."
