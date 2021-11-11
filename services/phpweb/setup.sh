@@ -30,10 +30,10 @@ if askif "Create/Update $title instances?" y; then
   service_setup_instance
 
   ask phpext "Required PHP extensions" "$phpext"
-  remember "$serviceconf" phpext
+  remember "$instanceconf" phpext
 
   ask apachemods "Required Apache modules" "$apachemods"
-  remember "$serviceconf" apachemods
+  remember "$instanceconf" apachemods
 
   # TODO ask for -e NO_OPCACHE=1 
   container_setup $dockerimage $containername \
