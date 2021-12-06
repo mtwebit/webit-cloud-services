@@ -15,6 +15,8 @@ desc="Provides user authentication."
 # https://github.com/gitphill/ldap-alpine
 dockerimage="pgarrett/ldap-alpine"
 
+# TODO: https://github.com/tiredofit/docker-openldap
+
 # Variables set by the caller script
 # $servicedir: this directory
 # $containername: human-readable name of the container
