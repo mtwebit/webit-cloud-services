@@ -73,7 +73,7 @@ EOF
   info "Enter the _full_ hostname for external Web access."
   info "You can specify additional host and domain names for services later."
   ask wbhost "Hostname" $wbhost
-  wbdomain=`domainname -d`
+  #wbdomain=`domainname -d`
   info "Enter the full domain name for this installation."
   info "It will be used to create an LDAP database later on."
   ask wbdomain "Domain name" $wbdomain

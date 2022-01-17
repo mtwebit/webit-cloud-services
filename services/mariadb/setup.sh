@@ -11,7 +11,7 @@
 title="Mariadb"
 desc="A MySQL-compatible database server"
 
-case `arch` in
+case `uname -m` in
 x86_64)
   dockerimage="mariadb"
   ;;
